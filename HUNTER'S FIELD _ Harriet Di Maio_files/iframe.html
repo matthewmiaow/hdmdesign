@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<!-- saved from url=(0069)chrome-extension://knjbgabkeojmfdhindppcmhhfiembkeb/popup/iframe.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Matter web extension</title>
+    <link rel="prefetch" as="font" type="font/woff2" href="chrome-extension://knjbgabkeojmfdhindppcmhhfiembkeb/public/fonts/Camphor%20W04%20Regular.woff2">
+    <link rel="prefetch" as="font" type="font/woff2" href="chrome-extension://knjbgabkeojmfdhindppcmhhfiembkeb/public/fonts/Camphor-Heavy.woff2">
+    <style>
+      @font-face {
+        font-family: 'MR-Camphor';
+        font-weight: 400;
+        font-style: normal;
+        src: url('/public/fonts/Camphor W04 Regular.woff2') format('woff2');
+        font-display: swap;
+      }
+
+      @font-face {
+        font-family: 'MR-Camphor';
+        font-weight: 700;
+        font-style: normal;
+        src: url('/public/fonts/Camphor-Bold.woff2') format('woff2');
+        font-display: swap;
+      }
+      :root {
+        --element100: rgba(0, 0, 0, 0.04);
+        --element200: rgba(0, 0, 0, 0.08);
+        --content200: rgba(0, 0, 0, 0.53);
+        --content300: rgba(0, 0, 0, 0.75);
+        --content400: rgba(0, 0, 0, 0.95);
+        --surface200: #ffffff;
+        --surfaceSpecial: #1f1f1f;
+      }
+      @media screen and (prefers-color-scheme: dark) {
+        :root {
+          --element100: rgba(255, 255, 255, 0.07);
+          --element200: rgba(255, 255, 255, 0.1);
+          --content200: rgba(255, 255, 255, 0.53);
+          --content300: rgba(255, 255, 255, 0.75);
+          --content400: rgba(255, 255, 255, 0.95);
+          --surface200: #1f2023;
+          --surfaceSpecial: #133753;
+        }
+      }
+      html,
+      body,
+      button {
+        font-family: 'MR-Camphor', system-ui, sans-serif;
+      }
+      body {
+        margin: 0;
+      }
+      button {
+        appearance: none;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+        cursor: pointer;
+        color: var(--content300);
+        padding: 0;
+      }
+      h1 {
+        align-items: center;
+        margin: 0;
+        display: flex;
+        font-size: 14px;
+        justify-content: center;
+        width: 100%;
+      }
+      header {
+        border-bottom: 1px solid var(--element200);
+        align-items: center;
+        display: flex;
+        grid-column: 1/4;
+        grid-row: 1/2;
+        justify-content: center;
+        padding: 0 10px;
+      }
+      svg {
+        fill: currentColor;
+      }
+      .headerButton {
+        align-items: center;
+        display: flex;
+        height: 30px;
+        justify-content: center;
+        width: 30px;
+      }
+      .buttons {
+        display: flex;
+        grid-column: 1/4;
+        padding: 5px;
+        grid-gap: 5px;
+      }
+      .buttons button {
+        align-items: center;
+        display: flex;
+        justify-content: center;
+        height: 100%;
+        flex-direction: column;
+        border-radius: 5px;
+        flex: 1 1 100%;
+        grid-row: 2/3;
+      }
+      .buttons button:hover {
+        background: var(--element100);
+      }
+      .buttons button[data-status='FAILED'] {
+        background: var(--surfaceSpecial);
+      }
+      .buttons button .spinner,
+      .buttons button .filledBookmark,
+      .buttons button[data-status='SAVING'] .emptyBookmark,
+      .buttons button[data-status='SAVED'] .emptyBookmark {
+        display: none;
+      }
+      .buttons button[data-status='SAVED'] .filledBookmark,
+      .buttons button[data-status='SAVING'] .spinner {
+        display: block;
+      }
+      .buttonText {
+        color: var(--content200);
+        margin-top: 0.5rem;
+        font-size: 0.75rem;
+      }
+      .container {
+        background: var(--surface200);
+        color: var(--content400);
+        display: grid;
+        grid-template-rows: 40px 75px;
+        grid-template-columns: repeat(3, calc(100% / 3));
+        width: 100%;
+      }
+      .spinner {
+        width: 20px;
+        height: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <button class="headerButton" aria-label="Open options page" id="options">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 10C1.5 10.8284 2.17157 11.5 3 11.5C3.82843 11.5 4.5 10.8284 4.5 10C4.5 9.17157 3.82843 8.5 3 8.5C2.17157 8.5 1.5 9.17157 1.5 10ZM15.5 10C15.5 10.8284 16.1716 11.5 17 11.5C17.8284 11.5 18.5 10.8284 18.5 10C18.5 9.17157 17.8284 8.5 17 8.5C16.1716 8.5 15.5 9.17157 15.5 10ZM8.5 10C8.5 10.8284 9.17157 11.5 10 11.5C10.8284 11.5 11.5 10.8284 11.5 10C11.5 9.17157 10.8284 8.5 10 8.5C9.17157 8.5 8.5 9.17157 8.5 10Z" fill="currentColor"></path>
+          </svg>
+        </button>
+        <h1>Matter</h1>
+        <button class="headerButton" id="closePopup" aria-label="Close popup">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M3.49994 3.43934C3.79283 3.14645 4.26771 3.14645 4.5606 3.43934L7.53027 6.40901L10.4999 3.43934C10.7928 3.14645 11.2677 3.14645 11.5606 3.43934C11.8535 3.73223 11.8535 4.20711 11.5606 4.5L8.59093 7.46967L11.5606 10.4393C11.8535 10.7322 11.8535 11.2071 11.5606 11.5C11.2677 11.7929 10.7928 11.7929 10.4999 11.5L7.53027 8.53033L4.5606 11.5C4.26771 11.7929 3.79283 11.7929 3.49994 11.5C3.20705 11.2071 3.20705 10.7322 3.49994 10.4393L6.46961 7.46967L3.49994 4.5C3.20705 4.20711 3.20705 3.73223 3.49994 3.43934Z" fill="currentColor"></path>
+          </svg>
+        </button>
+      </header>
+      <div class="buttons">
+        <button id="reader">
+          <svg width="20" height="21" viewBox="0 0 20 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M5 3.5H14C14.5523 3.5 15 3.94772 15 4.5V16.5C15 17.0523 14.5523 17.5 14 17.5H5C4.44772 17.5 4 17.0523 4 16.5V4.5C4 3.94772 4.44772 3.5 5 3.5ZM2.5 4.5C2.5 3.11929 3.61929 2 5 2H14C15.3807 2 16.5 3.11929 16.5 4.5V16.5C16.5 17.8807 15.3807 19 14 19H5C3.61929 19 2.5 17.8807 2.5 16.5V4.5ZM6.25 5.5C5.83579 5.5 5.5 5.83579 5.5 6.25C5.5 6.66421 5.83579 7 6.25 7H12.75C13.1642 7 13.5 6.66421 13.5 6.25C13.5 5.83579 13.1642 5.5 12.75 5.5H6.25ZM5.5 9.25C5.5 8.83579 5.83579 8.5 6.25 8.5H12.75C13.1642 8.5 13.5 8.83579 13.5 9.25C13.5 9.66421 13.1642 10 12.75 10H6.25C5.83579 10 5.5 9.66421 5.5 9.25ZM6.25 11.5C5.83579 11.5 5.5 11.8358 5.5 12.25C5.5 12.6642 5.83579 13 6.25 13H10.25C10.6642 13 11 12.6642 11 12.25C11 11.8358 10.6642 11.5 10.25 11.5H6.25Z" fill="currentColor"></path>
+          </svg>
+          <span class="buttonText">Reader</span>
+        </button>
+        <button data-status="NOT_SAVED" id="save">
+          <svg class="emptyBookmark" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M15.2227 18.4818C15.5549 18.7033 16 18.4651 16 18.0657V4C16 2.34315 14.6569 1 13 1H7C5.34315 1 4 2.34315 4 4V18.0657C4 18.4651 4.44507 18.7033 4.77735 18.4818L9.72265 15.1849C9.8906 15.0729 10.1094 15.0729 10.2773 15.1849L15.2227 18.4818ZM14.5 16.1972V4C14.5 3.17157 13.8284 2.5 13 2.5H7C6.17157 2.5 5.5 3.17157 5.5 4V16.1972L8.8906 13.9368C9.5624 13.489 10.4376 13.489 11.1094 13.9368L14.5 16.1972Z" fill="currentColor"></path>
+          </svg>
+          <svg class="spinner" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="currentColor">
+            <path opacity=".25" d="M16 0 A16 16 0 0 0 16 32 A16 16 0 0 0 16 0 M16 4 A12 12 0 0 1 16 28 A12 12 0 0 1 16 4"></path>
+            <path d="M16 0 A16 16 0 0 1 32 16 L28 16 A12 12 0 0 0 16 4z">
+              <animatetransform attributeName="transform" type="rotate" from="0 16 16" to="360 16 16" dur="0.8s" repeatCount="indefinite"></animatetransform>
+            </path>
+          </svg>
+          <svg class="filledBookmark" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M7 1C5.34315 1 4 2.34315 4 4V18.0657C4 18.4651 4.44507 18.7033 4.77735 18.4818L9.72265 15.1849C9.8906 15.0729 10.1094 15.0729 10.2773 15.1849L15.2227 18.4818C15.5549 18.7033 16 18.4651 16 18.0657V4C16 2.34315 14.6569 1 13 1H7Z" fill="currentColor"></path>
+          </svg>
+          <span class="buttonText">Save</span>
+        </button>
+        <button id="queue">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M5 3.5C5 2.67157 5.67157 2 6.5 2H13.5C14.3284 2 15 2.67157 15 3.5H5ZM4.5 7.5H15.5C16.8807 7.5 18 8.61929 18 10V17.5C18 18.8807 16.8807 20 15.5 20H4.5C3.11929 20 2 18.8807 2 17.5V10C2 8.61929 3.11929 7.5 4.5 7.5ZM4.5 9C3.94772 9 3.5 9.44772 3.5 10V17.5C3.5 18.0523 3.94772 18.5 4.5 18.5H15.5C16.0523 18.5 16.5 18.0523 16.5 17.5V10C16.5 9.44772 16.0523 9 15.5 9H4.5ZM5.50004 4.5H14.5C15.7095 4.5 16.7184 5.35888 16.95 6.5H15.3663C15.1934 6.2011 14.8702 6 14.5 6H5.50004C5.1299 6 4.80673 6.2011 4.63382 6.5H3.05005C3.28168 5.35888 4.29056 4.5 5.50004 4.5Z"></path>
+          </svg>
+          <span class="buttonText">Go to Queue</span>
+        </button>
+      </div>
+    </div>
+    <script src="chrome-extension://knjbgabkeojmfdhindppcmhhfiembkeb/popup/iframe.js"></script>
+  
+
+</body></html>
